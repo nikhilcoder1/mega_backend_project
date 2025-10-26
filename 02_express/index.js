@@ -21,9 +21,9 @@ app.post("/tea", (req, res) => {
 });
 
 // get all teas
-app.get("/teas" , (req,res) => {
-    res.status(201).send(teaData) 
-})
+app.get("/teas", (req, res) => {
+  res.status(201).send(teaData);
+});
 
 // get a tea with id
 app.get("/teas/:id", (req, res) => {
@@ -59,7 +59,6 @@ app.delete("/teas/:id", (req, res) => {
   teaData.splice(index, 1);
   res.status(204).send("Deleted");
 });
-
 
 app.listen(port, () => {
   console.log(`App listening on: ${port}`);
