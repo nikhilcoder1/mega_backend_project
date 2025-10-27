@@ -1,0 +1,5 @@
+{"level":"info","message":"{\"method\":\"POST\",\"url\":\"/tea\",\"status\":\"201\",\"responseTime\":\"10.240\"}","timestamp":"2025-10-27T18:20:28.380Z"}
+{"level":"info","message":"{\"method\":\"POST\",\"url\":\"/tea\",\"status\":\"201\",\"responseTime\":\"0.386\"}","timestamp":"2025-10-27T18:20:43.642Z"}
+{"level":"info","message":"{\"method\":\"GET\",\"url\":\"/teas\",\"status\":\"201\",\"responseTime\":\"0.871\"}","timestamp":"2025-10-27T18:20:47.275Z"}
+{"level":"info","message":"A post request was made to add tea","timestamp":"2025-10-27T18:22:50.945Z"}
+{"level":"info","message":"{\"method\":\"POST\",\"url\":\"/tea\",\"status\":\"201\",\"responseTime\":\"9.463\"}","timestamp":"2025-10-27T18:22:50.962Z"}
