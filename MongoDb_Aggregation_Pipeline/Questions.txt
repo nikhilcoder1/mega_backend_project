@@ -1,0 +1,58 @@
+// It contains all the queries I will be practicing .
+
+1. How many users are active ?
+
+Solution :
+
+[
+  {
+    $match: {
+      isActive : true
+    }
+  },
+  {
+    $count: 'activeUsers'
+  }
+  
+]
+
+2. What is the average age of all users ?
+
+Solution : (Use $group whenever you need to summarize, calculate, or combine data across multiple documents — rather than look at each document individually.)
+
+[
+	{
+	  $group: {
+	    _id: null, // null bcz we want all users
+	    average: {
+	      $avg: "$age" 
+	    }
+	  }
+	} 
+]
+
+3. List the top 5 most common favourite fruits among the users .
+
+Solution : (3 aggregation pipelines used)
+    1. To filter the users based on favoriteFruit
+    2. Sorting the users based on favoriteFruit
+    3. Find the top 'k' based on above pipelines
+
+[
+  {
+    $group: {
+    _id: "$favoriteFruit",
+    count:{
+      $sum:1    // increases value by one everytime the favoriteFruit is found
+    }
+    }
+  },
+  {
+    $sort: {
+      count: -1 // -1 for descending order , 1 for ascending
+    }
+  },
+  {
+    $limit: 3 // when we want to find top 3 
+  }
+]
