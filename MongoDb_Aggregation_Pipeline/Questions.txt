@@ -13,7 +13,6 @@ Solution :
   {
     $count: 'activeUsers'
   }
-  
 ]
 
 2. What is the average age of all users ?
@@ -120,3 +119,94 @@ Solution :
 	  }
 	}
 ]
+
+7. What is the average number of tags per user ?
+
+Approach 1:
+
+Pipeline:1 - (unwind means : This deconstructs the tags array, creating a new document for each tag.)
+Pipeline:2 - First $group : Regroups by _id, counting how many tags each document had (using $sum: 1).
+Pipeline:3 - Second $group : Calculates the average of numberOfTags across all documents.
+
+[
+  {
+    $unwind: {
+      path: "$tags",
+    }
+  },
+  {
+    $group: {
+      _id: "$_id",
+      numberOfTags:{
+        $sum:1
+      }
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      avgNumberOfTags: {
+        $avg: "$numberOfTags"
+      }
+    }
+  }
+]
+
+Approach 2:
+
+Pipeline:1 - $addFields : Adds a field numberOfTags that equals: The size of the tags array, or 0 if tags is missing or null.
+
+Pipeline:2 - $group : Averages the numberOfTags across all documents.
+
+[
+  {
+    $addFields: {
+      numberOfTags: {
+        $size:{
+          $ifNull:["$tags",[]]
+        }
+      }
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      avgTags: {
+        $avg: "$numberOfTags"
+      }
+    }
+  }
+]
+
+Conclusion :
+
+    Use $unwind ➜ when you want the average only among docs that have at least one tag.
+    Use $size + $ifNull ➜ when you want the average across all docs, treating missing tags as 0.
+
+
+8 : How many users have 'enim' as one of their tags ?
+
+Solution :
+
+Pipeline:1 - This stage filters documents where tags contains the value "enim".
+  If tags is an array, MongoDB automatically matches documents that contain "enim" as one of the elements.
+
+Pipeline:2 - 
+  Counts the number of documents that passed through $match.
+  The output will be a single document with one field.
+
+[
+  {
+    $match: {
+      tags:"enim"
+    }
+  },
+  {
+    $count: 'UserWithEnimTag'
+  }
+]
+
+9 : What are the names and age of the users who are inactive and have 'velit' as a tag ?
+
+Solution :
+
