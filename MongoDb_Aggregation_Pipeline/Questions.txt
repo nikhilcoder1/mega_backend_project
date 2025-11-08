@@ -253,3 +253,44 @@ Solution : (regex can be generated from ChatGPT)
     $count: 'numbers'
   }
 ]
+
+11 : Who has registered most recently ?
+
+Solution :
+
+[
+  {
+    $sort: {
+      registered: -1
+    }
+  },
+  { $limit: 3 } ,
+  {
+    $project: {
+      name:1,
+      registered:1,
+      favoriteFruit:1,
+      _id:0
+    }
+  }
+]
+
+12 : Categorize users by their favourite fruit.
+
+Solution : 
+
+[
+  {
+    $group: {
+      _id: "$favoriteFruit",
+      users: {
+        $push:"$name"
+      }
+    }
+  }
+]
+
+13. How many users have 'ad' as the second tag in their list of tags ?
+
+Solution :
+
