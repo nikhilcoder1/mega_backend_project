@@ -277,7 +277,13 @@ Solution :
 
 12 : Categorize users by their favourite fruit.
 
-Solution : 
+Solution : $group Stage does two main things :
+
+  1. Groups documents by favoriteFruit
+          Each unique value of favoriteFruit becomes a separate group (like a GROUP BY in SQL).
+
+  2. Creates an array of all names belonging to that fruit.
+          $push appends each person’s name field into an array for that fruit.
 
 [
   {
@@ -294,3 +300,70 @@ Solution :
 
 Solution :
 
+[
+  {
+    $match: {
+      "tags.1" : "ad"
+    }
+  },
+  {
+    $count: 'NumberOfAdtags'
+  }
+]
+
+14. Find users who have both 'enim' and 'id' as their tags .
+
+Solution :
+
+The $all operator checks that the tags array contains both "enim" and "id" (in any order).
+It means : Only documents that have all specified elements inside the tags array will pass.
+
+Key Points :
+
+Operator:               	Purpose:	                                          Example:
+$all	    Matches arrays containing all specified elements	      { tags: { $all: ["enim", "id"] } }
+$in	  Matches arrays containing any of the specified elements     { tags: { $in: ["enim", "id"] } }
+
+[
+  {
+    $match: {
+      tags:{
+        $all:["enim","id"]
+      }
+    }
+  },
+  {
+    $count: 'Fetched'
+  }
+]
+
+15. List all the companies located in USA with their corresponding user count 
+
+Solution :
+
+Pipeline : 1 ->
+$match Stage : Filters documents where the nested field company.location.country equals "USA".
+
+Pipeline : 2 ->
+$group Stage : 
+-> Groups all documents (from the USA) by their company title.
+-> $sum: 1 means: count how many users belong to each company.
+So:
+_id = company name
+userCount = number of users in that company (who are in the USA)
+
+[
+  {
+    $match: {
+      "company.location.country" : "USA"
+    }
+  },
+  {
+    $group: {
+      _id: "$company.title",
+      userCount : {$sum:1}
+    }
+  }
+]
+
+16. 
