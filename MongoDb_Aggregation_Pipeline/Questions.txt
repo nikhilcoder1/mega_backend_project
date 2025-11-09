@@ -366,4 +366,44 @@ userCount = number of users in that company (who are in the USA)
   }
 ]
 
-16. 
+Lookup examples :
+
+Ex:1 =>
+
+[
+  {
+    $lookup: {
+      from: "authors",
+      localField: "author_id",
+      foreignField: "_id",
+      as: "author_details"
+    }
+  },
+  {
+    $addFields: {
+      author_details: {
+        $first: "$author_details"
+      }
+    }
+  }
+]
+
+Ex:2 =>
+
+[
+  {
+    $lookup: {
+      from: "authors",
+      localField: "author_id",
+      foreignField: "_id",
+      as: "author_details"
+    }
+  },
+  {
+    $addFields: {
+      author_details: {
+        $arrayElemAt:["$author_details",0]
+      }
+    }
+  }
+]
